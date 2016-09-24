@@ -98,6 +98,10 @@ public class GsonRequest<T, E> extends Request<T> {
     @Override
     public void deliverError(VolleyError error) {
         if (errorListener != null) {
+            if (error.networkResponse == null || error.networkResponse.data == null) {
+                errorListener.onErrorResponse(null);
+                return;
+            }
             try {
                 String json = new String(
                         error.networkResponse.data,
